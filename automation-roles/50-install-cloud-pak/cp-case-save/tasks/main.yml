@@ -1,0 +1,17 @@
+---
+- debug:
+    var: _v_case_github_url
+
+- debug:
+    var: _p_case_dir
+
+- debug:
+    var: _p_case_name
+
+- debug:
+    var: _p_case_version
+
+- debug:
+    var: _p_download_dependent_cases
+
+- include_tasks: download-case-file.yml

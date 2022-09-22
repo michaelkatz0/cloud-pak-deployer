@@ -1,0 +1,5 @@
+cloudctl case save \
+    --repo {{ _v_case_github_url }} \
+    --case {{ __p_case_name }} \
+    --version {{ _p_case_version }} \
+    --outputdir {{ _p_case_dir }} {% if not (_p_download_dependent_cases | default(True) | bool) %} --no-dependency {% endif %}
