@@ -108,13 +108,23 @@
     path: "{{ status_dir }}/cp4wa/case"
     state: absent
 
-- name: Save case files for Cloud Pak for Watson AIOps when using private registry or when explicitly using case files
-  include_role: 
-    name: cp4wa-case-save
+- name: Loop through services and download CASE files for defined services
+  include_role: cp-case-save
   vars:
-    _p_current_cp4wa_cluster: "{{ current_cp4wa_cluster }}"
-  when: 
-  - _use_case_files
+    _p_case_name: "{{ _current_cp4wa_service.name }}"
+    _p_case_version: "{{ _current_cp4wa_service.version }}"
+    _p_case_dir: "{{ status_dir }}/cp4wa"
+  loop: "{{ current_cp4wa_cluster.services | default([]) }}"
+  loop_control:
+    loop_var: _current_cp4wa_service
+
+# - name: Save case files for Cloud Pak for Watson AIOps when using private registry or when explicitly using case files
+#   include_role: 
+#     name: cp4wa-case-save
+#   vars:
+#     _p_current_cp4wa_cluster: "{{ current_cp4wa_cluster }}"
+#   when: 
+#   - _use_case_files
 
 - name: Get OpenShift storage classes to use for {{ current_cp4wa_cluster.project }} and storage class name {{ current_cp4wa_cluster.storage_class_name }}
   include_tasks: cp4wa-get-storage-classes.yml
